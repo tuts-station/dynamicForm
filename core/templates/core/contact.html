@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <style>
+        .label-input{
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3>{{ formname.name|title }}</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for field in fields %}
+                            {% for key, value in field.label.items %}
+                                {% for type, labels in value.items %}
+                                    {% if type == 'text' %}
+                                        <div class="row">
+                                            {% for label in labels %}
+                                                <div class="col-md-12">
+                                                    <label for="">{{ label }}</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <input type="{{ type }}" name="{{ label }}" class="form-control">
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% elif type == 'textarea' %}
+                                        <div class="row">
+                                            {% for label in labels %}
+                                                <div class="col-md-12">
+                                                    <label for="">{{ label }}</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <textarea name="{{ label }}" id="{{ label }}" cols="30" rows="3" class="form-control"></textarea>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% elif type == 'date' %}
+                                        <div class="row">
+                                            {% for label in labels %}
+                                                <div class="col-md-12">
+                                                    <label for="">{{ label }}</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <input type="{{ type }}" name="{{ label }}" class="form-control">
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% elif type == 'file' %}
+                                        <div class="row">
+                                            {% for label in labels %}
+                                                <div class="col-md-12">
+                                                    <label for="">{{ label }}</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <input type="{{ type }}" name="{{ label }}" class="form-control" multiple>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% elif type == 'radio' %}
+                                        <div class="row">
+                                            {% for label in labels %}
+                                                <div class="col-md-12">
+                                                    <label for="">{{ label }}</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    {% for more_field in field.more_field %}
+                                                        {{ more_field }}
+                                                        <input type="{{ type }}" name="{{ label }}" value="{{ more_field }}">
+                                                    {% endfor %}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% elif type == 'checkbox' %}
+                                        <div class="row">
+                                            {% for label in labels %}
+                                                <div class="col-md-12">
+                                                    <label for="">{{ label }}</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    {% for more_field in field.more_field %}
+                                                        {{ more_field }}
+                                                        <input type="{{ type }}" name="{{ label }}" value="{{ more_field }}">
+                                                    {% endfor %}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        {% endfor %}
+                        <button type="submit" class="btn btn-success mt-2 form-submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+</script>
+</html>

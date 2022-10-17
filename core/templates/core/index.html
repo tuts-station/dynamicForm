@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <style type="text/css">
+        .cus-check ul{
+            list-style: none;
+            padding: 0;
+        }
+        .cus-check{
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="card-header">
+                        <h3>Form</h3>
+                    </div>
+                    <div class="card-body">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon3">Form Name</span>
+                                    </div>
+                                    {% if form_name %}
+                                        <input type="text" name="name" class="form-control" value="{{ form_name.name }}">
+                                    {% else %}
+                                        {{ formname_form.name }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group add-input" style="margin-top:10px !important">
+                        </div>
+                        <div class="form-group copy" style="margin-top:10px !important">
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <div class="form-check cus-check">
+                                {{ form.field_type }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary mt-2 add-field">Add</button>
+                                <button type="submit" class="btn btn-success mt-2">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(document).ready(function() {
+        var i = 0;
+        $('body').on('click','.add-more',function(){
+            ++i;
+            $(".copy").append('<div class="col-md-12 mt-3 this-field"><div class="row"><div class="col-md-11"><input type="text" name="more_field" class="form-control more-field"></div><div class="col-md-1 text-right"><button class="btn btn-danger remove" type="button"><i class="fa fa-trash"></i> </button></div></div></div>');
+            $('.copy').css('margin-top','10px');
+        });
+
+        $("body").on("click",".remove",function(){
+            $(this).parent().parent().parent().remove();
+        });
+
+        $("body").on("click",".remove-input",function(){
+            $(this).parent().parent().parent().parent().parent().remove();
+        });
+
+        $('body').on('click','.add-field',function(){
+            ++i;
+            $(".copy").append('<div class="col-md-12 mt-3"><div class="row"><div class="col-md-12"><input type="text" placeholder="Enter Type" name="type" class="form-control selectfield-'+i+'"></div></div></div></div><div class="col-md-12 mt-3"><div class="row"><div class="col-md-11"><input type="text" placeholder="Enter Label" name="label" class="form-control text-label"></div><div class="col-md-1 text-right"><button class="btn btn-success add-more" type="button"><i class="fa fa-plus"></i> </button></div></div></div>');
+        });
+    });
+</script>
+</html>
