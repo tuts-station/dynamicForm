@@ -57,17 +57,19 @@ def contact_view(request,slug):
         load_data = json.loads(data)
         response_record[formname.name] = load_data
         del response_record[formname.name]['csrfmiddlewaretoken']
-        formname = FormData(value=response_record, formname=formname)
-        formname.save()
+        if not request.FILES:
+            formname = FormData(value=response_record, formname=formname)
+            formname.save()
         for filename, file in request.FILES.items():
             formname = FormName.objects.get(slug=slug)
             img_respose[filename] = file
             folder = 'media/images'
             fs = FileSystemStorage(location=folder)
             filename = fs.save(img_respose[filename].name, img_respose[filename])
-            dict = response_record[formname.name]
-            dict['Image'] = filename
-            formname = FormData(value=dict, formname=formname)
+            response_record[formname.name]
+            dict = {'Image' : filename}
+            response_record[formname.name].update(dict)
+            formname = FormData(value=response_record, formname=formname)
             formname.save()
     return render(request,'core/contact.html',{'formname':formname,'fields':fields,'form':form})
 
